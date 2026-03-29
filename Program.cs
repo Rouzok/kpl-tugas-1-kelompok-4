@@ -1,82 +1,39 @@
-﻿using QuizInggris_TableDriven;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
-namespace QuizInggris_TableDriven
+class Program
 {
-    public enum DaftarKata
+    static void Main()
     {
-        thelf, wainch, going, anslip, anspe, see, an, good,
-        caffie, sier, elm, nineteen, water, brother, easy, give, @new, daiy
-    }
-
-    class PemeriksaKata
-    {
-        private bool[] tabelValidasi = {
-                false, // thelf
-                false, // wainch
-                true,  // going
-                false, // anslip
-                false, // anspe
-                true,  // see
-                true,  // an
-                true,  // good
-                false, // caffie
-                false, // sier
-                true,  // elm
-                true,  // nineteen
-                true,  // water
-                true,  // brother
-                true,  // easy
-                true,  // give
-                true,  // new
-                false  // daiy
-            };
-
-        public bool CekKebenaran(DaftarKata kata)
+        // Table-driven: pasangan kata (Inggris -> Indonesia)
+        Dictionary<string, string> table = new Dictionary<string, string>()
         {
-            return tabelValidasi[(int)kata];
-        }
-    }
+            {"Apple", "Apel"},
+            {"Cat", "Kucing"},
+            {"Book", "Buku"}
+        };
 
+        Console.WriteLine("Soal Mencocokkan Kata:\n");
 
-    // Kemungkinan Implementasi di windows app
-    public class QuizForm
-    {
-        private PemeriksaKata logic = new PemeriksaKata();
+        int score = 0;
 
-        // Simulasi Event Handler saat tombol "Submit" diklik di UI
-        public void btnSubmit_Click(List<string> pilihanUser)
+        foreach (var item in table)
         {
-            Console.WriteLine("--- Hasil Pengecekan Jawaban ---");
-            int kataYangBenar = 11;
-            int skor = 0;
+            Console.Write($"Apa arti dari '{item.Key}'? ");
+            string jawaban = Console.ReadLine();
 
-            foreach (string kataInput in pilihanUser)
+            // cek jawaban
+            if (jawaban.Equals(item.Value, StringComparison.OrdinalIgnoreCase))
             {
-                if (Enum.TryParse(kataInput, out DaftarKata kataEnum))
-                {
-                    if (logic.CekKebenaran(kataEnum))
-                    {
-                        Console.WriteLine($"[BENAR] {kataInput} adalah kata bahasa Inggris nyata.");
-                        skor++;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"[SALAH] {kataInput} bukan kata bahasa Inggris nyata.");
-                    }
-                }
+                Console.WriteLine("Benar!\n");
+                score++;
             }
-            Console.WriteLine($"\nTotal Skor: {skor} dari {kataYangBenar} kata dipilih.");
+            else
+            {
+                Console.WriteLine($"Salah! Jawaban yang benar: {item.Value}\n");
+            }
         }
-    }
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            QuizForm simulation = new QuizForm();
-            List<string> kataDipilih = new List<string> { "going", "thelf", "water", "new" };
 
-            simulation.btnSubmit_Click(kataDipilih);
-        }
+        Console.WriteLine($"Skor akhir: {score} / {table.Count}");
     }
 }
