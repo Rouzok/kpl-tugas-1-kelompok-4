@@ -1,39 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public enum DaftarKata
+{
+    air, fire, water, earth
+}
+
+class PencocokKata
+{
+    // Table-driven: pasangan kata berdasarkan index enum
+    private string[] pasangan = {
+        "udara", // air
+        "api",   // fire
+        "air",   // water
+        "tanah"  // earth
+    };
+
+    public string AmbilPasangan(DaftarKata kata)
+    {
+        return pasangan[(int)kata];
+    }
+}
+
+// Simulasi tampilan soal
+public class QuizForm
+{
+    private PencocokKata logic = new PencocokKata();
+
+    public void TampilkanSoal()
+    {
+        Console.WriteLine("=== Soal Mencocokkan Kata ===\n");
+
+        foreach (DaftarKata kata in Enum.GetValues(typeof(DaftarKata)))
+        {
+            string arti = logic.AmbilPasangan(kata);
+            Console.WriteLine($"{kata} | {arti}");
+        }
+    }
+}
+
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Table-driven: pasangan kata (Inggris -> Indonesia)
-        Dictionary<string, string> table = new Dictionary<string, string>()
-        {
-            {"Apple", "Apel"},
-            {"Cat", "Kucing"},
-            {"Book", "Buku"}
-        };
-
-        Console.WriteLine("Soal Mencocokkan Kata:\n");
-
-        int score = 0;
-
-        foreach (var item in table)
-        {
-            Console.Write($"Apa arti dari '{item.Key}'? ");
-            string jawaban = Console.ReadLine();
-
-            // cek jawaban
-            if (jawaban.Equals(item.Value, StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine("Benar!\n");
-                score++;
-            }
-            else
-            {
-                Console.WriteLine($"Salah! Jawaban yang benar: {item.Value}\n");
-            }
-        }
-
-        Console.WriteLine($"Skor akhir: {score} / {table.Count}");
+        QuizForm quiz = new QuizForm();
+        quiz.TampilkanSoal();
     }
 }
